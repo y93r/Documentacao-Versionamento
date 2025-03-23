@@ -1,0 +1,22 @@
+table DTurno
+	lineageTag: f8893854-d00a-4289-b70e-6c28dea33556
+
+	column Turnos
+		dataType: string
+		lineageTag: 9abe39d3-f0d0-4ce9-a1dd-c3c0390d16c6
+		summarizeBy: none
+		sourceColumn: Turnos
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DTurno = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMgxRitWJVjKCUMZAKhYA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Turnos = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Turnos", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

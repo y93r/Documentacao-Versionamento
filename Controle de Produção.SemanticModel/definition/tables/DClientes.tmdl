@@ -1,0 +1,59 @@
+table DClientes
+	lineageTag: 47fe2ae2-5145-4865-a8b3-9e8cbb645b8f
+
+	column COD
+		dataType: string
+		lineageTag: f4c6ee7c-07c3-4f0e-be63-532ab4dd4d73
+		summarizeBy: none
+		sourceColumn: COD
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLIENTE
+		dataType: string
+		lineageTag: a23816cc-eaad-4734-89b4-b1ca6ffc4549
+		summarizeBy: none
+		sourceColumn: CLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CIDADE
+		dataType: string
+		lineageTag: f66b61b1-7fdc-4156-bbd3-ff0721589d34
+		summarizeBy: none
+		sourceColumn: CIDADE
+
+		annotation SummarizationSetBy = Automatic
+
+	column ESTADO
+		dataType: string
+		lineageTag: 5aa94d47-d4b4-47ce-8790-0159acee3208
+		summarizeBy: none
+		sourceColumn: ESTADO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DClientes = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Dados.xlsx"), null, true),
+				    CLIENTES_Sheet = Fonte{[Item="CLIENTES",Kind="Sheet"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(CLIENTES_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Tipo Alterado", [PromoteAllScalars=true]),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"COD", type text}, {"CLIENTE", type text}, {"CIDADE", type text}}),
+				    #"Dividir Coluna por Delimitador" = Table.SplitColumn(#"Tipo Alterado1", "CIDADE", Splitter.SplitTextByDelimiter("–", QuoteStyle.Csv), {"CIDADE.1", "CIDADE.2"}),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Dividir Coluna por Delimitador",{{"CIDADE.1", type text}, {"CIDADE.2", type text}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado2",{{"CIDADE.2", "ESTADO"}}),
+				    #"Texto Limpo" = Table.TransformColumns(#"Colunas Renomeadas",{{"ESTADO", Text.Clean, type text}}),
+				    #"Texto Aparado" = Table.TransformColumns(#"Texto Limpo",{{"ESTADO", Text.Trim, type text}}),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Texto Aparado",{{"CIDADE.1", "CIDADE"}}),
+				    #"Texto Aparado1" = Table.TransformColumns(#"Colunas Renomeadas1",{{"CIDADE", Text.Trim, type text}}),
+				    #"Texto Limpo1" = Table.TransformColumns(#"Texto Aparado1",{{"CIDADE", Text.Clean, type text}})
+				in
+				    #"Texto Limpo1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

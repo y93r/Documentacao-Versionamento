@@ -1,0 +1,60 @@
+relationship bd8ce851-9291-4479-b446-434b3f7f330d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DCalendario.Data
+	toColumn: LocalDateTable_4807c554-e48c-49d7-b559-37ad28d2e48f.Date
+
+relationship 427a51c5-1452-4c20-a6f8-ca8d6a22d4b1
+	fromColumn: PCP.DATA
+	toColumn: DCalendario.Data
+
+relationship 9ec75ae0-970c-4cd4-872b-d3611fa00771
+	fromColumn: PRODUÇÃO.DATA
+	toColumn: DCalendario.Data
+
+relationship 0af5b0da-f47b-451e-be81-b768ede0bf09
+	fromColumn: PCP.MÁQUINA
+	toColumn: DMaquinas.MÁQUINAS
+
+relationship dab49504-5780-4014-bd2b-40a635658a74
+	fromColumn: PRODUÇÃO.MAQUINA
+	toColumn: DMaquinas.MÁQUINAS
+
+relationship 84580e25-1b32-4cf5-bcd7-ef3de13504a0
+	fromColumn: PCP.TURNO
+	toColumn: DTurno.Turnos
+
+relationship 1c8ec1b1-a5e1-4926-a90f-2adbdc11b402
+	fromColumn: PRODUÇÃO.TURNO
+	toColumn: DTurno.Turnos
+
+relationship AutoDetected_0da925b5-30a3-4b2c-82e1-317c7c71fc41
+	fromColumn: PRODUÇÃO.MATRICULA
+	toColumn: DOperadores.Matricula
+
+relationship 4dddc4ef-b9cb-49e1-9472-64129f9695c0
+	fromColumn: 'PCP AGRUPADO'.DATA
+	toColumn: DCalendario.Data
+
+relationship a71ac8a9-4806-4c74-b189-bfa5983f893f
+	fromColumn: 'PCP AGRUPADO'.TURNO
+	toColumn: DTurno.Turnos
+
+relationship b3a943ae-2cdd-4f94-ae0f-6b2e939cbceb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DOperadores.'Data de Admissão'
+	toColumn: LocalDateTable_c0e20131-2208-414d-b94b-8bffabf729b3.Date
+
+relationship 2f06c8e6-2de3-14f1-025a-58cce358dd1a
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: DClientes.COD
+	toColumn: DCodigo.COD
+
+relationship 5ec5014c-3971-30ad-0763-4fd664469a4d
+	fromColumn: PCP.CÓDIGO
+	toColumn: DCodigo.COD
+
+relationship c4c9154d-1c26-c450-e423-35cdc2563355
+	fromColumn: PRODUÇÃO.CODIGO
+	toColumn: DCodigo.COD
+

@@ -1,0 +1,67 @@
+table DOperadores
+	lineageTag: d7e693ba-94ea-422a-839b-7026018497dd
+
+	column Nome
+		dataType: string
+		lineageTag: a9b5c7af-fbb2-41ff-89f5-e34a3975f93a
+		summarizeBy: none
+		sourceColumn: Nome
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data de Admissão'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: b85c13f1-2787-47d8-807a-cc7eaddd2af2
+		summarizeBy: none
+		sourceColumn: Data de Admissão
+
+		variation Variation
+			isDefault
+			relationship: b3a943ae-2cdd-4f94-ae0f-6b2e939cbceb
+			defaultHierarchy: LocalDateTable_c0e20131-2208-414d-b94b-8bffabf729b3.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Matricula
+		dataType: string
+		lineageTag: 004a4d98-a34a-4afc-9b24-3668b1f78f27
+		summarizeBy: none
+		sourceColumn: Matricula
+
+		annotation SummarizationSetBy = Automatic
+
+	column Turno
+		dataType: string
+		lineageTag: b69ed8a7-787e-4427-ab63-515025afe8fd
+		summarizeBy: none
+		sourceColumn: Turno
+
+		annotation SummarizationSetBy = Automatic
+
+	column TempoServiço(Meses) = DATEDIFF(DOperadores[Data de Admissão], TODAY(), MONTH)
+		formatString: 0
+		lineageTag: 93911558-8b33-40fa-a459-21639ff15162
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DOperadores = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Funcionarios.xlsx"), null, true),
+				    Sheet1_Sheet = Fonte{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Nome", type text}, {"Data de Admissão", type date}, {"Matricula", Int64.Type}, {"Turno", type text}, {"Column5", Int64.Type}, {"Column6", Int64.Type}, {"Column7", Int64.Type}, {"Column8", type any}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Column5", "Column6", "Column7", "Column8"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Colunas Removidas",{{"Matricula", type text}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

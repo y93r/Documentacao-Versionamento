@@ -1,0 +1,40 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transformar Arquivo de 2024'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transformar Arquivo de 2024\Consultas Auxiliares'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation PBI_QueryOrder = ["DClientes","DCodigo","SEG POR HR","Arquivo de Amostra","Parâmetro1","Transformar o Arquivo de Exemplo","Transformar Arquivo","PCP","PRODUÇÃO","Medidas","DMaquinas","DTurno","DOperadores","PCP AGRUPADO"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.140.1577.0 (25.02)+00af0910c5ca19a229c472b0dfc17a2c488f6b0a
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DateTableTemplate_4be86e43-1a0d-48a9-ab39-b9b95eb56d44
+ref table DClientes
+ref table DCalendario
+ref table LocalDateTable_4807c554-e48c-49d7-b559-37ad28d2e48f
+ref table PCP
+ref table PRODUÇÃO
+ref table Medidas
+ref table DMaquinas
+ref table DTurno
+ref table DCodigo
+ref table DOperadores
+ref table 'PCP AGRUPADO'
+ref table LocalDateTable_c0e20131-2208-414d-b94b-8bffabf729b3
+
+ref cultureInfo pt-BR
+

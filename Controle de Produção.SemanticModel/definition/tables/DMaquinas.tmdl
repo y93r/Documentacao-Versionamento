@@ -1,0 +1,22 @@
+table DMaquinas
+	lineageTag: 6b84d376-3cbd-47a9-a263-304b1b84001d
+
+	column MÁQUINAS
+		dataType: string
+		lineageTag: ccb199e3-8218-4f92-b1c7-ee26caf0cfbb
+		summarizeBy: none
+		sourceColumn: MÁQUINAS
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DMaquinas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8j3cGBjq6eeoYKgUq4PENULlGivFxgIA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [MÁQUINAS = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"MÁQUINAS", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

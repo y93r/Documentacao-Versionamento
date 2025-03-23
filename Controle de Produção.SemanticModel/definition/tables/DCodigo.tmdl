@@ -1,0 +1,65 @@
+table DCodigo
+	lineageTag: 0de042b5-34d2-405d-943c-204658344cb1
+
+	column COD
+		dataType: string
+		lineageTag: c883b1a3-20bf-454f-8627-7d91590f8631
+		summarizeBy: none
+		sourceColumn: COD
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TEMPO DE CICLO'
+		dataType: double
+		lineageTag: cbb2e71c-78d7-4ee2-969e-db7216138306
+		summarizeBy: sum
+		sourceColumn: TEMPO DE CICLO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PÇS/HR
+		dataType: int64
+		formatString: 0
+		lineageTag: 4209ed23-cc83-4e3a-a303-3752ed295014
+		summarizeBy: sum
+		sourceColumn: PÇS/HR
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TOTAL POR TURNO'
+		dataType: int64
+		formatString: 0
+		lineageTag: dbf7e38b-7319-4e18-b408-94d105a9fe9e
+		summarizeBy: sum
+		sourceColumn: TOTAL POR TURNO
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TOTAL DIA'
+		dataType: int64
+		formatString: 0
+		lineageTag: cc4af9bb-5eb7-4b72-911e-a2029ee63b74
+		summarizeBy: sum
+		sourceColumn: TOTAL DIA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DCodigo = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Dados.xlsx"), null, true),
+				    COD_Sheet = Fonte{[Item="COD",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(COD_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"COD", type text}, {"TEMPO DE CICLO", type number}, {"PÇS/HR", type number}, {"TOTAL POR TURNO", type number}, {"TOTAL DIA", type number}}),
+				    #"Linhas Filtradas" = Table.SelectRows(#"Tipo Alterado", each ([COD] <> null)),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Linhas Filtradas",{{"PÇS/HR", Int64.Type}, {"TOTAL POR TURNO", Int64.Type}, {"TOTAL DIA", Int64.Type}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

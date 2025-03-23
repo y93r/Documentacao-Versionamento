@@ -1,0 +1,54 @@
+table 'PCP AGRUPADO'
+	lineageTag: 7a34cf90-e6c3-4499-84ee-03378c173435
+
+	column DATA
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1014f0dc-c4f2-4d8f-b1dc-a47e6f4000b3
+		summarizeBy: none
+		sourceColumn: DATA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TURNO
+		dataType: string
+		lineageTag: 66fa465f-568d-4997-a9fb-b650d23c6cfe
+		summarizeBy: none
+		sourceColumn: TURNO
+
+		annotation SummarizationSetBy = Automatic
+
+	column CÓDIGO
+		dataType: string
+		lineageTag: 917e3fdf-7de7-46ae-b400-df0ddaa44a57
+		summarizeBy: none
+		sourceColumn: CÓDIGO
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contagem
+		dataType: int64
+		formatString: 0
+		lineageTag: 150783ee-7463-45c8-9357-21ce327e443c
+		summarizeBy: sum
+		sourceColumn: Contagem
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'PCP AGRUPADO' = m
+		mode: import
+		source =
+				let
+				    Fonte = PCP,
+				    #"Linhas Agrupadas" = Table.Group(Fonte, {"DATA", "TURNO", "CÓDIGO"}, {{"Contagem", each List.Sum([META]), type nullable number}}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Linhas Agrupadas",{{"Contagem", Int64.Type}}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Tipo Alterado1",{{"Contagem", Int64.Type}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

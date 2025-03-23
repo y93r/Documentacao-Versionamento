@@ -1,0 +1,152 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 306,
+            "y": 447
+          },
+          "nodeIndex": "DCalendario",
+          "nodeLineageTag": "58ebede1-7fe3-4ee6-84bb-03a79d81d072",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 297,
+            "y": 0
+          },
+          "nodeIndex": "PRODUÇÃO",
+          "nodeLineageTag": "579d55b8-c85b-4f0b-a472-cb91df183caf",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 567.17688823473009,
+            "y": 0
+          },
+          "nodeIndex": "PCP",
+          "nodeLineageTag": "e0603469-eaec-40e8-8e38-5f03e817c806",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1306.9921370541003,
+            "y": 23
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "ebcd3b7a-b98d-4a91-b88c-b17bb3c2b839",
+          "size": {
+            "height": 151,
+            "width": 223
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 817.99213705410034,
+            "y": 0
+          },
+          "nodeIndex": "PCP AGRUPADO",
+          "nodeLineageTag": "7a34cf90-e6c3-4499-84ee-03378c173435",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1114.3616394153598,
+            "y": 290
+          },
+          "nodeIndex": "DClientes",
+          "nodeLineageTag": "47fe2ae2-5145-4865-a8b3-9e8cbb645b8f",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 718.99213705410034,
+            "y": 441
+          },
+          "nodeIndex": "DCodigo",
+          "nodeLineageTag": "0de042b5-34d2-405d-943c-204658344cb1",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "DOperadores",
+          "nodeLineageTag": "d7e693ba-94ea-422a-839b-7026018497dd",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 244
+          },
+          "nodeIndex": "DMaquinas",
+          "nodeLineageTag": "6b84d376-3cbd-47a9-a263-304b1b84001d",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 412
+          },
+          "nodeIndex": "DTurno",
+          "nodeLineageTag": "f8893854-d00a-4289-b70e-6c28dea33556",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 4
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}

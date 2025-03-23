@@ -1,0 +1,89 @@
+table PCP
+	lineageTag: e0603469-eaec-40e8-8e38-5f03e817c806
+
+	column DATA
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: b479feac-c999-4d75-9e98-45946096560a
+		summarizeBy: none
+		sourceColumn: DATA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SEMANA
+		dataType: int64
+		formatString: 0
+		lineageTag: 254b86ca-2ca8-45eb-a51c-b8a40dd8858a
+		summarizeBy: sum
+		sourceColumn: SEMANA
+
+		annotation SummarizationSetBy = Automatic
+
+	column TURNO
+		dataType: string
+		lineageTag: 41be793d-a10e-467d-98d5-1096c4b2e556
+		summarizeBy: none
+		sourceColumn: TURNO
+
+		annotation SummarizationSetBy = Automatic
+
+	column MÁQUINA
+		dataType: string
+		lineageTag: e3960d5d-759e-4c52-bd25-f30e127eb898
+		summarizeBy: none
+		sourceColumn: MÁQUINA
+
+		annotation SummarizationSetBy = Automatic
+
+	column CÓDIGO
+		dataType: string
+		lineageTag: a41123e0-8fe1-4298-8885-bfc44a76df49
+		summarizeBy: none
+		sourceColumn: CÓDIGO
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLIENTE
+		dataType: string
+		lineageTag: fecb926a-7358-4934-b1e9-d4d3cd96c493
+		summarizeBy: none
+		sourceColumn: CLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TOTAL HRS RODANDO'
+		dataType: int64
+		formatString: 0
+		lineageTag: a0e5837d-490f-42e1-835f-f397e34b73d2
+		summarizeBy: sum
+		sourceColumn: TOTAL HRS RODANDO
+
+		annotation SummarizationSetBy = Automatic
+
+	column META
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f3e59df-85c9-47d0-a43e-945428776b31
+		summarizeBy: sum
+		sourceColumn: META
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PCP = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Relatorio PCP.xlsx"), null, true),
+				    Jan_Sheet = Fonte{[Item="Jan",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Jan_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"DATA", type date}, {"SEMANA", Int64.Type}, {"DIA DA SEMANA", type text}, {"TURNO", type text}, {"MÁQUINA", type text}, {"CÓDIGO", type text}, {"CLIENTE", type text}, {"TOTAL HRS RODANDO", Int64.Type}, {"META", Int64.Type}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"DIA DA SEMANA"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

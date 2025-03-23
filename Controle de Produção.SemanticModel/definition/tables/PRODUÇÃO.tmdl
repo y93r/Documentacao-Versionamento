@@ -1,0 +1,113 @@
+table PRODUÇÃO
+	lineageTag: 579d55b8-c85b-4f0b-a472-cb91df183caf
+
+	column DATA
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 8a1eb7ba-5860-46dc-8afa-bc88ed5ecd9f
+		summarizeBy: none
+		sourceColumn: DATA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TURNO
+		dataType: string
+		lineageTag: 69d70227-5e42-4a49-bf4f-b85addfd487f
+		summarizeBy: none
+		sourceColumn: TURNO
+
+		annotation SummarizationSetBy = Automatic
+
+	column MATRICULA
+		dataType: string
+		lineageTag: a5fb034a-85fa-4bd5-b53b-54dcccca4635
+		summarizeBy: none
+		sourceColumn: MATRICULA
+
+		annotation SummarizationSetBy = Automatic
+
+	column MAQUINA
+		dataType: string
+		lineageTag: 686bf671-84ae-4ea2-8631-1606aa09eb88
+		summarizeBy: none
+		sourceColumn: MAQUINA
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLIENTE
+		dataType: string
+		lineageTag: 90518ffe-7735-4358-84c2-bb1caff1c042
+		summarizeBy: none
+		sourceColumn: CLIENTE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CODIGO
+		dataType: string
+		lineageTag: 280af970-25e0-480b-90c3-0839a07df25a
+		summarizeBy: none
+		sourceColumn: CODIGO
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TOTAL PRODUZIDO'
+		dataType: int64
+		formatString: 0
+		lineageTag: ce3cc2db-2736-487c-97b3-adb08884c68a
+		summarizeBy: sum
+		sourceColumn: TOTAL PRODUZIDO
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TOTAL FALHAS'
+		dataType: int64
+		formatString: 0
+		lineageTag: 23578d60-fa8d-4eaf-b96f-8b709d8dc863
+		summarizeBy: sum
+		sourceColumn: TOTAL FALHAS
+
+		annotation SummarizationSetBy = Automatic
+
+	column FPY
+		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 88d66f5f-66c2-4770-b188-cbbf727095de
+		summarizeBy: sum
+		sourceColumn: FPY
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TOTAL PEÇAS BOAS' = 'PRODUÇÃO'[TOTAL PRODUZIDO] - 'PRODUÇÃO'[TOTAL FALHAS]
+		formatString: 0
+		lineageTag: 047f5b9b-64ef-4125-a147-5ddaac9bb813
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PRODUÇÃO = m
+		mode: import
+		queryGroup: 'Transformar Arquivo de 2024\Consultas Auxiliares'
+		source =
+				let
+				    Fonte = Json.Document(File.Contents("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Banco_de_dados\2024\bd_producao.json")),
+				    dados = Fonte[dados],
+				    #"Convertido para Tabela" = Record.ToTable(dados),
+				    #"Value Expandido" = Table.ExpandRecordColumn(#"Convertido para Tabela", "Value", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Value Expandido",{"Name"}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Removidas",{{"DATA", type date}, {"TOTAL PRODUZIDO", Int64.Type}, {"TOTAL FALHAS", Int64.Type}}),
+				    #"Valor Substituído" = Table.ReplaceValue(#"Tipo Alterado","FPY:","",Replacer.ReplaceText,{"FPY"}),
+				    #"Texto Limpo" = Table.TransformColumns(#"Valor Substituído",{{"FPY", Text.Clean, type text}}),
+				    #"Texto Aparado" = Table.TransformColumns(#"Texto Limpo",{{"FPY", Text.Trim, type text}}),
+				    #"Valor Substituído1" = Table.ReplaceValue(#"Texto Aparado",".",",",Replacer.ReplaceText,{"FPY"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Valor Substituído1",{{"FPY", Percentage.Type}}),
+				    #"Colunas Removidas1" = Table.RemoveColumns(#"Tipo Alterado1",{"DIA DA SEMANA"}),
+				    #"Valor Substituído2" = Table.ReplaceValue(#"Colunas Removidas1","MAQUINA","MÁQUINA",Replacer.ReplaceText,{"MAQUINA"})
+				in
+				    #"Valor Substituído2"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

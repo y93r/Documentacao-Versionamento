@@ -1,0 +1,105 @@
+table Medidas
+	lineageTag: ebcd3b7a-b98d-4a91-b88c-b17bb3c2b839
+
+	measure Total_prd = SUM('PRODUÇÃO'[TOTAL PRODUZIDO])
+		formatString: 0
+		displayFolder: Produção
+		lineageTag: 2204f35c-328e-4999-af71-567c4b65ef69
+
+	measure Total_meta = SUM('PCP'[META])
+		formatString: 0
+		displayFolder: Produção
+		lineageTag: fe09916f-3a7e-4aea-873e-e4d192b51755
+
+	measure DEF = IF(ISBLANK([Total_prd]), BLANK(), CALCULATE([Total_prd] - [Total_meta]))
+		formatString: 0
+		displayFolder: Produção
+		lineageTag: c126f940-0cab-400f-a436-c30704c05dcb
+
+	measure 'Media Produtividade' =
+			IF(ISBLANK([Total_prd]), BLANK(),
+			    AVERAGEX(
+			    SUMMARIZECOLUMNS(DCalendario[Data].[Dia]),
+			    CALCULATE(DIVIDE([Total_prd], [Total_meta])
+			    )))
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Performance
+		lineageTag: 31d8989e-53b2-4296-9414-a2cbac55dee5
+
+	measure Meta_produtividade = 0.94 -- target setor
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Performance
+		lineageTag: 1d367a95-139f-4415-98bf-728cb36530a6
+
+	measure 'Media FPY' = ROUND(AVERAGE('PRODUÇÃO'[FPY]),4)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Performance
+		lineageTag: 7c68705b-0d40-485d-9345-6778d0f165cd
+
+	measure Meta_FPY = 0.99 -- target do setor
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Performance
+		lineageTag: 36e47eb1-01d9-469f-a383-8809205aecc5
+
+	measure 'Mediana PÇS Produzidas' =
+			MEDIANX(
+			    FILTER(
+			        'PRODUÇÃO',
+			        'PRODUÇÃO'[TOTAL PRODUZIDO] <> 0
+			    ),
+			    'PRODUÇÃO'[TOTAL PRODUZIDO]
+			)
+		formatString: 0
+		displayFolder: Tempo de Ciclo
+		lineageTag: 3b2fce64-3665-4a0a-8296-a05da7a8f7f0
+
+	measure 'PÇS Hr Real' = ROUND(Medidas[Mediana PÇS Produzidas]/7, 0)
+		formatString: 0
+		displayFolder: Tempo de Ciclo
+		lineageTag: 70d6f1cd-6a1f-4e0d-b371-5634c2d9398f
+
+	measure 'DEF Pçs Hora' =
+			IF(
+			    ISBLANK([PÇS Hr Real]), BLANK(),
+			        [PÇS Hr Real] - SUM(DCodigo[PÇS/HR]))
+		formatString: 0
+		displayFolder: Tempo de Ciclo
+		lineageTag: e39006d3-4183-4ce7-af93-8cf920cb0cff
+
+	measure Total_pçs_boas = SUM('PRODUÇÃO'[TOTAL PEÇAS BOAS])
+		formatString: 0
+		displayFolder: Cliente
+		lineageTag: f38e605a-bce8-4f10-b651-f55e6957c7cb
+
+	measure Total_meta_cliente = SUM('PCP AGRUPADO'[Contagem])
+		formatString: 0
+		displayFolder: Cliente
+		lineageTag: 6cea8ef4-bcf4-4246-8c69-31ee4f680035
+
+	measure DEF_Cliente = IF(ISBLANK([Total_pçs_boas]), BLANK(), CALCULATE([Total_pçs_boas] - [Total_meta_cliente]))
+		formatString: 0
+		displayFolder: Cliente
+		lineageTag: ade93dcc-a3d3-465c-a039-c5f2121c4e91
+
+	measure 'Media Produtividade Cliente' =
+			IF(ISBLANK([Total_pçs_boas]), BLANK(),
+			    AVERAGEX(
+			    SUMMARIZECOLUMNS(DClientes[COD]),
+			    CALCULATE(DIVIDE([Total_pçs_boas], [Total_meta_cliente])
+			    )))
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Cliente
+		lineageTag: a3d5cbf6-9242-4078-be87-ca3bfeee4b42
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+

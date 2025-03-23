@@ -1,0 +1,59 @@
+table DCalendario
+	lineageTag: 58ebede1-7fe3-4ee6-84bb-03a79d81d072
+
+	column Data
+		formatString: Short Date
+		lineageTag: 0eb74f83-3e98-4326-85d3-137f3b5b7be3
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: bd8ce851-9291-4479-b446-434b3f7f330d
+			defaultHierarchy: LocalDateTable_4807c554-e48c-49d7-b559-37ad28d2e48f.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Semana = WEEKNUM(DCalendario[Data])
+		formatString: 0
+		lineageTag: 329173c9-9f5f-448f-ae00-b2cff4885751
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column NomeMes = FORMAT(DCalendario[Data], "mmmm")
+		lineageTag: 41d1e421-cdf2-44a6-8f20-e03a18587895
+		summarizeBy: none
+		sortByColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes = ```
+			MONTH(DCalendario[Data]) 
+			```
+		formatString: 0
+		lineageTag: 84de0213-344f-4dff-838b-060b131cc361
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column NomeDia = FORMAT(DCalendario[Data], "dddd")
+		lineageTag: 3756b931-29c5-44eb-a76f-de299f6da9b1
+		summarizeBy: none
+		sortByColumn: DiaSemana
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaSemana = WEEKDAY(DCalendario[Data])
+		formatString: 0
+		lineageTag: 93957716-b29b-4ec5-8a2b-f2f050e668e4
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DCalendario = calculated
+		mode: import
+		source = CALENDARAUTO()
+
+	annotation PBI_Id = 084b19cb335e4a558febffc6766adafa
+

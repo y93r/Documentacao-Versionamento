@@ -1,0 +1,73 @@
+expression 'SEG POR HR' =
+		let
+		    Fonte = Excel.Workbook(File.Contents("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Dados.xlsx"), null, true),
+		    #"SEG POR HR_Sheet" = Fonte{[Item="SEG POR HR",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"SEG POR HR_Sheet", [PromoteAllScalars=true]),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"HR X HR", type text}, {"TURNO", type text}, {"SEG POR HR", Int64.Type}})
+		in
+		    #"Tipo Alterado"
+	lineageTag: d38a7424-dc42-4a79-ad9f-327a5623a388
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
+expression 'Arquivo de Amostra' =
+		let
+		    Fonte = Folder.Files("C:\Users\Usuário\Documents\DataScience\Projetos\LinkedIn\2025\3-PBI\Versionamento-Documentacao\Banco_de_dados\2024"),
+		    Navegação1 = Fonte{0}[Content]
+		in
+		    Navegação1
+	lineageTag: 9ec6c140-ffef-4451-a5ab-773a14da6b6d
+	queryGroup: 'Transformar Arquivo de 2024\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Binary
+
+	annotation PBI_NavigationStepName = Navegação
+
+expression Parâmetro1 = #"Arquivo de Amostra" meta [IsParameterQuery=true, BinaryIdentifier=#"Arquivo de Amostra", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 72fa4919-eabf-4eea-b958-c5e1202417fd
+	queryGroup: 'Transformar Arquivo de 2024\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transformar o Arquivo de Exemplo' =
+		let
+		    Fonte = Json.Document(Parâmetro1),
+		    #"Convertido para Tabela" = Table.FromRecords({Fonte}),
+		    #"dados Expandido" = Table.ExpandRecordColumn(#"Convertido para Tabela", "dados", {"1", "2", "3", "4", "5"}, {"dados.1", "dados.2", "dados.3", "dados.4", "dados.5"}),
+		    #"dados.1 Expandido" = Table.ExpandRecordColumn(#"dados Expandido", "dados.1", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.1.DATA", "dados.1.DIA DA SEMANA", "dados.1.TURNO", "dados.1.MATRICULA", "dados.1.MAQUINA", "dados.1.CLIENTE", "dados.1.CODIGO", "dados.1.TOTAL PRODUZIDO", "dados.1.TOTAL FALHAS", "dados.1.FPY"}),
+		    #"dados.2 Expandido" = Table.ExpandRecordColumn(#"dados.1 Expandido", "dados.2", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.2.DATA", "dados.2.DIA DA SEMANA", "dados.2.TURNO", "dados.2.MATRICULA", "dados.2.MAQUINA", "dados.2.CLIENTE", "dados.2.CODIGO", "dados.2.TOTAL PRODUZIDO", "dados.2.TOTAL FALHAS", "dados.2.FPY"}),
+		    #"dados.3 Expandido" = Table.ExpandRecordColumn(#"dados.2 Expandido", "dados.3", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.3.DATA", "dados.3.DIA DA SEMANA", "dados.3.TURNO", "dados.3.MATRICULA", "dados.3.MAQUINA", "dados.3.CLIENTE", "dados.3.CODIGO", "dados.3.TOTAL PRODUZIDO", "dados.3.TOTAL FALHAS", "dados.3.FPY"}),
+		    #"dados.4 Expandido" = Table.ExpandRecordColumn(#"dados.3 Expandido", "dados.4", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.4.DATA", "dados.4.DIA DA SEMANA", "dados.4.TURNO", "dados.4.MATRICULA", "dados.4.MAQUINA", "dados.4.CLIENTE", "dados.4.CODIGO", "dados.4.TOTAL PRODUZIDO", "dados.4.TOTAL FALHAS", "dados.4.FPY"}),
+		    #"dados.5 Expandido" = Table.ExpandRecordColumn(#"dados.4 Expandido", "dados.5", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.5.DATA", "dados.5.DIA DA SEMANA", "dados.5.TURNO", "dados.5.MATRICULA", "dados.5.MAQUINA", "dados.5.CLIENTE", "dados.5.CODIGO", "dados.5.TOTAL PRODUZIDO", "dados.5.TOTAL FALHAS", "dados.5.FPY"}),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"dados.5 Expandido",{{"dados.1.DATA", type date}, {"dados.1.DIA DA SEMANA", type text}, {"dados.1.TURNO", type text}, {"dados.1.MATRICULA", Int64.Type}, {"dados.1.MAQUINA", type text}, {"dados.1.CLIENTE", type text}, {"dados.1.CODIGO", type text}, {"dados.1.TOTAL PRODUZIDO", Int64.Type}, {"dados.1.TOTAL FALHAS", Int64.Type}, {"dados.1.FPY", type text}, {"dados.2.DATA", type date}, {"dados.2.DIA DA SEMANA", type text}, {"dados.2.TURNO", type text}, {"dados.2.MATRICULA", Int64.Type}, {"dados.2.MAQUINA", type text}, {"dados.2.CLIENTE", type text}, {"dados.2.CODIGO", type text}, {"dados.2.TOTAL PRODUZIDO", Int64.Type}, {"dados.2.TOTAL FALHAS", Int64.Type}, {"dados.2.FPY", type text}, {"dados.3.DATA", type date}, {"dados.3.DIA DA SEMANA", type text}, {"dados.3.TURNO", type text}, {"dados.3.MATRICULA", Int64.Type}, {"dados.3.MAQUINA", type text}, {"dados.3.CLIENTE", type text}, {"dados.3.CODIGO", type text}, {"dados.3.TOTAL PRODUZIDO", Int64.Type}, {"dados.3.TOTAL FALHAS", Int64.Type}, {"dados.3.FPY", type text}, {"dados.4.DATA", type date}, {"dados.4.DIA DA SEMANA", type text}, {"dados.4.TURNO", type text}, {"dados.4.MATRICULA", Int64.Type}, {"dados.4.MAQUINA", type text}, {"dados.4.CLIENTE", type text}, {"dados.4.CODIGO", type text}, {"dados.4.TOTAL PRODUZIDO", Int64.Type}, {"dados.4.TOTAL FALHAS", Int64.Type}, {"dados.4.FPY", type text}, {"dados.5.DATA", type date}, {"dados.5.DIA DA SEMANA", type text}, {"dados.5.TURNO", type text}, {"dados.5.MATRICULA", Int64.Type}, {"dados.5.MAQUINA", type text}, {"dados.5.CLIENTE", type text}, {"dados.5.CODIGO", type text}, {"dados.5.TOTAL PRODUZIDO", Int64.Type}, {"dados.5.TOTAL FALHAS", Int64.Type}, {"dados.5.FPY", type text}})
+		in
+		    #"Tipo Alterado"
+	lineageTag: 5b7196f4-4795-4b4a-97d7-6f965f5cab09
+	queryGroup: 'Transformar Arquivo de 2024'
+
+	annotation PBI_ResultType = Record
+
+expression 'Transformar Arquivo' =
+		let
+		    Fonte = (Parâmetro1 as binary) => let
+		    Fonte = Json.Document(Parâmetro1),
+		    #"Convertido para Tabela" = Table.FromRecords({Fonte}),
+		    #"dados Expandido" = Table.ExpandRecordColumn(#"Convertido para Tabela", "dados", {"1", "2", "3", "4", "5"}, {"dados.1", "dados.2", "dados.3", "dados.4", "dados.5"}),
+		    #"dados.1 Expandido" = Table.ExpandRecordColumn(#"dados Expandido", "dados.1", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.1.DATA", "dados.1.DIA DA SEMANA", "dados.1.TURNO", "dados.1.MATRICULA", "dados.1.MAQUINA", "dados.1.CLIENTE", "dados.1.CODIGO", "dados.1.TOTAL PRODUZIDO", "dados.1.TOTAL FALHAS", "dados.1.FPY"}),
+		    #"dados.2 Expandido" = Table.ExpandRecordColumn(#"dados.1 Expandido", "dados.2", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.2.DATA", "dados.2.DIA DA SEMANA", "dados.2.TURNO", "dados.2.MATRICULA", "dados.2.MAQUINA", "dados.2.CLIENTE", "dados.2.CODIGO", "dados.2.TOTAL PRODUZIDO", "dados.2.TOTAL FALHAS", "dados.2.FPY"}),
+		    #"dados.3 Expandido" = Table.ExpandRecordColumn(#"dados.2 Expandido", "dados.3", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.3.DATA", "dados.3.DIA DA SEMANA", "dados.3.TURNO", "dados.3.MATRICULA", "dados.3.MAQUINA", "dados.3.CLIENTE", "dados.3.CODIGO", "dados.3.TOTAL PRODUZIDO", "dados.3.TOTAL FALHAS", "dados.3.FPY"}),
+		    #"dados.4 Expandido" = Table.ExpandRecordColumn(#"dados.3 Expandido", "dados.4", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.4.DATA", "dados.4.DIA DA SEMANA", "dados.4.TURNO", "dados.4.MATRICULA", "dados.4.MAQUINA", "dados.4.CLIENTE", "dados.4.CODIGO", "dados.4.TOTAL PRODUZIDO", "dados.4.TOTAL FALHAS", "dados.4.FPY"}),
+		    #"dados.5 Expandido" = Table.ExpandRecordColumn(#"dados.4 Expandido", "dados.5", {"DATA", "DIA DA SEMANA", "TURNO", "MATRICULA", "MAQUINA", "CLIENTE", "CODIGO", "TOTAL PRODUZIDO", "TOTAL FALHAS", "FPY"}, {"dados.5.DATA", "dados.5.DIA DA SEMANA", "dados.5.TURNO", "dados.5.MATRICULA", "dados.5.MAQUINA", "dados.5.CLIENTE", "dados.5.CODIGO", "dados.5.TOTAL PRODUZIDO", "dados.5.TOTAL FALHAS", "dados.5.FPY"}),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"dados.5 Expandido",{{"dados.1.DATA", type date}, {"dados.1.DIA DA SEMANA", type text}, {"dados.1.TURNO", type text}, {"dados.1.MATRICULA", Int64.Type}, {"dados.1.MAQUINA", type text}, {"dados.1.CLIENTE", type text}, {"dados.1.CODIGO", type text}, {"dados.1.TOTAL PRODUZIDO", Int64.Type}, {"dados.1.TOTAL FALHAS", Int64.Type}, {"dados.1.FPY", type text}, {"dados.2.DATA", type date}, {"dados.2.DIA DA SEMANA", type text}, {"dados.2.TURNO", type text}, {"dados.2.MATRICULA", Int64.Type}, {"dados.2.MAQUINA", type text}, {"dados.2.CLIENTE", type text}, {"dados.2.CODIGO", type text}, {"dados.2.TOTAL PRODUZIDO", Int64.Type}, {"dados.2.TOTAL FALHAS", Int64.Type}, {"dados.2.FPY", type text}, {"dados.3.DATA", type date}, {"dados.3.DIA DA SEMANA", type text}, {"dados.3.TURNO", type text}, {"dados.3.MATRICULA", Int64.Type}, {"dados.3.MAQUINA", type text}, {"dados.3.CLIENTE", type text}, {"dados.3.CODIGO", type text}, {"dados.3.TOTAL PRODUZIDO", Int64.Type}, {"dados.3.TOTAL FALHAS", Int64.Type}, {"dados.3.FPY", type text}, {"dados.4.DATA", type date}, {"dados.4.DIA DA SEMANA", type text}, {"dados.4.TURNO", type text}, {"dados.4.MATRICULA", Int64.Type}, {"dados.4.MAQUINA", type text}, {"dados.4.CLIENTE", type text}, {"dados.4.CODIGO", type text}, {"dados.4.TOTAL PRODUZIDO", Int64.Type}, {"dados.4.TOTAL FALHAS", Int64.Type}, {"dados.4.FPY", type text}, {"dados.5.DATA", type date}, {"dados.5.DIA DA SEMANA", type text}, {"dados.5.TURNO", type text}, {"dados.5.MATRICULA", Int64.Type}, {"dados.5.MAQUINA", type text}, {"dados.5.CLIENTE", type text}, {"dados.5.CODIGO", type text}, {"dados.5.TOTAL PRODUZIDO", Int64.Type}, {"dados.5.TOTAL FALHAS", Int64.Type}, {"dados.5.FPY", type text}})
+		in
+		    #"Tipo Alterado"
+		in
+		    Fonte
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transformar o Arquivo de Exemplo""}" ]
+	lineageTag: e4e6d4d0-6b9a-46ea-b5a2-9bb93b3a6b0d
+	queryGroup: 'Transformar Arquivo de 2024\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Function
+
