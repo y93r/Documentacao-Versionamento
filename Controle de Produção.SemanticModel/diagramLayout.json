@@ -137,6 +137,19 @@
             "width": 234
           },
           "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1579.9921370541003,
+            "y": 271.5
+          },
+          "nodeIndex": "data_atualizacao",
+          "nodeLineageTag": "dc1fe335-3689-4c0b-9275-0aabf09dc889",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas as tabelas",

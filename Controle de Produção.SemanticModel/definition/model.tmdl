@@ -14,7 +14,7 @@ queryGroup 'Transformar Arquivo de 2024\Consultas Auxiliares'
 
 	annotation PBI_QueryGroupOrder = 0
 
-annotation PBI_QueryOrder = ["DClientes","DCodigo","SEG POR HR","Arquivo de Amostra","Parâmetro1","Transformar o Arquivo de Exemplo","Transformar Arquivo","PCP","PRODUÇÃO","Medidas","DMaquinas","DTurno","DOperadores","PCP AGRUPADO"]
+annotation PBI_QueryOrder = ["DClientes","DCodigo","SEG POR HR","Arquivo de Amostra","Parâmetro1","Transformar o Arquivo de Exemplo","Transformar Arquivo","PCP","PRODUÇÃO","Medidas","DMaquinas","DTurno","DOperadores","PCP AGRUPADO","data_atualizacao"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
@@ -35,6 +35,8 @@ ref table DCodigo
 ref table DOperadores
 ref table 'PCP AGRUPADO'
 ref table LocalDateTable_c0e20131-2208-414d-b94b-8bffabf729b3
+ref table data_atualizacao
+ref table LocalDateTable_7e6a0c1d-db21-45a1-912f-42eb341d1bbe
 
 ref cultureInfo pt-BR
 

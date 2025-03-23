@@ -58,3 +58,8 @@ relationship c4c9154d-1c26-c450-e423-35cdc2563355
 	fromColumn: PRODUÇÃO.CODIGO
 	toColumn: DCodigo.COD
 
+relationship 3b5cc869-37bc-411f-bd9d-177d69080a3a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: data_atualizacao.data_atualizacao
+	toColumn: LocalDateTable_7e6a0c1d-db21-45a1-912f-42eb341d1bbe.Date
+
