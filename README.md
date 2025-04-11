@@ -3,6 +3,8 @@
 ## Objetivo
 Este repositório tem como propósito demonstrar boas práticas de documentação e versionamento em projetos de Business Intelligence (BI), utilizando ferramentas que facilitam esses processos.
 
+[Artigo detalhado](https://www.linkedin.com/pulse/documenta%C3%A7%C3%A3o-e-versionamento-de-projetos-bi-yara-de-oliveira-rufino-oiimf/?trackingId=8rfuACJLS9eRdn4QqxLCUQ%3D%3D)
+
 ## Documentação
 - **DAX Studio** – Geração automática de documentação para modelos DAX;
 - **GitHub** – Armazenamento e compartilhamento da documentação;
